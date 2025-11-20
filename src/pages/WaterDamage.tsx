@@ -144,58 +144,6 @@ const WaterDamage = () => {
         </div>
       </section>
 
-      {/* Common Causes */}
-      <section className="py-16 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8">Common Causes of Water Damage</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <div>
-                  <h3 className="font-semibold mb-2">Burst or Leaking Pipes</h3>
-                  <p className="text-muted-foreground">Frozen pipes, age, or pressure issues can cause sudden flooding.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <div>
-                  <h3 className="font-semibold mb-2">Appliance Malfunctions</h3>
-                  <p className="text-muted-foreground">Washing machines, water heaters, and dishwashers can fail unexpectedly.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <div>
-                  <h3 className="font-semibold mb-2">Roof Leaks</h3>
-                  <p className="text-muted-foreground">Storm damage or wear can allow water infiltration.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <div>
-                  <h3 className="font-semibold mb-2">Sewage Backup</h3>
-                  <p className="text-muted-foreground">Blockages can cause contaminated water to enter your property.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <div>
-                  <h3 className="font-semibold mb-2">Natural Flooding</h3>
-                  <p className="text-muted-foreground">Heavy rain, storms, or natural disasters can cause extensive flooding.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-2 h-2 rounded-full bg-primary mt-2"></div>
-                <div>
-                  <h3 className="font-semibold mb-2">HVAC Issues</h3>
-                  <p className="text-muted-foreground">AC units and heating systems can develop leaks over time.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Contact Section */}
       <section className="py-16 bg-background">
