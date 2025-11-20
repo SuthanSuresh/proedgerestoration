@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 declare global {
   interface Window {
@@ -17,6 +19,8 @@ const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
 
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   // Load reCAPTCHA script dynamically
   useEffect(() => {
@@ -30,8 +34,10 @@ const RequestEstimate = () => {
     }
   }, []);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isSubmitting) return;
 
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -43,28 +49,56 @@ const RequestEstimate = () => {
 
     // Make sure grecaptcha is loaded
     if (!window.grecaptcha) {
-      console.error("reCAPTCHA not loaded");
+      toast({
+        title: "Error",
+        description: "Security verification not loaded. Please refresh the page and try again.",
+        variant: "destructive",
+      });
       return;
     }
 
-    // Execute V2 invisible reCAPTCHA
-    window.grecaptcha.ready(async () => {
-      try {
-        const token = await window.grecaptcha.execute(); // V2 style, uses div's sitekey
-        formData.append("g-recaptcha-response", token);
+    setIsSubmitting(true);
 
-        // Submit to FormSubmit
-        await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-          method: "POST",
-          body: formData,
+    try {
+      // Execute reCAPTCHA and get token
+      await new Promise<void>((resolve, reject) => {
+        window.grecaptcha.ready(async () => {
+          try {
+            const token = await window.grecaptcha.execute();
+            formData.append("g-recaptcha-response", token);
+
+            // Submit to FormSubmit
+            const response = await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+              method: "POST",
+              body: formData,
+            });
+
+            if (!response.ok) {
+              throw new Error("Form submission failed");
+            }
+
+            setSubmitted(true);
+            form.reset();
+            toast({
+              title: "Success!",
+              description: "Thank you for your request. We'll contact you within 24 hours!",
+            });
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
         });
-
-        setSubmitted(true);
-        form.reset();
-      } catch (err) {
-        console.error("Form submission or reCAPTCHA error:", err);
-      }
-    });
+      });
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast({
+        title: "Submission Failed",
+        description: "There was a problem submitting your request. Please try calling us directly.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -130,8 +164,15 @@ const RequestEstimate = () => {
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_ajax" value="true" />
 
-            <Button type="submit" className="w-full" size="lg">
-              Request Free Estimate
+            <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Request Free Estimate"
+              )}
             </Button>
           </form>
         ) : (
