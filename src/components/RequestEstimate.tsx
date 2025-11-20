@@ -82,7 +82,7 @@ const RequestEstimate = () => {
               data-size="invisible"
             ></div>
 
-            <input type="hidden" name="_subject" value="New Estimate Request from {firstName} {lastName}" />
+            <input type="hidden" name="_subject" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
 
