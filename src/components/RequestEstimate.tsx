@@ -3,6 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>;
+
 const RequestEstimate = () => {
   return (
     <Card>
@@ -11,7 +13,15 @@ const RequestEstimate = () => {
         <CardDescription>Fill out the form and we'll get back to you within 24 hours</CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4" action="https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2" method="POST">
+        <form
+          className="space-y-4"
+          action="https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2"
+          method="POST"
+          onSubmit={(e) => {
+            e.preventDefault();
+            grecaptcha.execute();
+          }}
+        >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label htmlFor="firstName" className="text-sm font-medium">
@@ -54,8 +64,10 @@ const RequestEstimate = () => {
             />
           </div>
 
+          <div class="g-recaptcha" data-sitekey="6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ" data-size="invisible"></div>
+
           <input type="hidden" name="_subject" value="New Estimate Request from {firstName} {lastName}" />
-          <input type="hidden" name="_captcha" value="true" />
+          <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_next" value="https://proedgerestoration.ca/" />
 
           <Button type="submit" className="w-full" size="lg">
