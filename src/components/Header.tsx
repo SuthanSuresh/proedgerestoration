@@ -11,7 +11,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
-            <Link to="/#home" className="text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
+            <Link to="/#top" className="text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
               ProEdge Restoration
             </Link>
           </div>
