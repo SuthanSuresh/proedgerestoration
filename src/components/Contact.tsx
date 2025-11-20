@@ -33,8 +33,8 @@ const Contact = () => {
                   </div>
                   <div>
                     <div className="font-semibold">Emergency Hotline</div>
-                    <a href="tel:1-800-PRO-EDGE" className="text-primary text-xl font-bold">
-                      1-800-PRO-EDGE
+                    <a href="tel:289-224-9612" className="text-primary text-xl font-bold">
+                      (289) 224-9612
                     </a>
                   </div>
                 </div>
