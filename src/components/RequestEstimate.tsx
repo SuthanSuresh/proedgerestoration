@@ -7,8 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 declare global {
   interface Window {
     grecaptcha: {
-      execute: (siteKey: string, options: { action: string }) => Promise<string>;
+      render: (container: string | HTMLElement, parameters: any) => number;
+      execute: (widgetId?: number) => void;
+      getResponse: (widgetId?: number) => string;
       ready: (callback: () => void) => void;
+      reset: (widgetId?: number) => void;
     };
   }
 }
@@ -17,23 +20,31 @@ const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
 
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [widgetId, setWidgetId] = useState<number | null>(null);
 
-  const [recaptchaReady, setRecaptchaReady] = useState(false);
-
-  // Wait for reCAPTCHA to be ready
+  // Initialize reCAPTCHA v2 invisible
   useEffect(() => {
-    const checkRecaptcha = () => {
+    const initRecaptcha = () => {
       if (window.grecaptcha && window.grecaptcha.ready) {
         window.grecaptcha.ready(() => {
-          setRecaptchaReady(true);
+          const container = document.getElementById('recaptcha-container');
+          if (container && widgetId === null) {
+            const id = window.grecaptcha.render(container, {
+              sitekey: SITE_KEY,
+              size: 'invisible',
+              callback: () => {
+                // This callback is called when reCAPTCHA is verified
+              },
+            });
+            setWidgetId(id);
+          }
         });
       } else {
-        // If grecaptcha is not loaded yet, check again in 100ms
-        setTimeout(checkRecaptcha, 100);
+        setTimeout(initRecaptcha, 100);
       }
     };
-    checkRecaptcha();
-  }, []);
+    initRecaptcha();
+  }, [widgetId]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,28 +59,42 @@ const RequestEstimate = () => {
     // Dynamic email subject
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    if (!recaptchaReady || !window.grecaptcha) {
+    if (!window.grecaptcha || widgetId === null) {
       console.error("reCAPTCHA not ready yet");
       return;
     }
 
     try {
-      // Execute reCAPTCHA v3 and get token
-      const token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
-      formData.append("g-recaptcha-response", token);
+      // Execute reCAPTCHA v2 invisible
+      window.grecaptcha.execute(widgetId);
+      
+      // Wait a bit for the reCAPTCHA to complete
+      setTimeout(async () => {
+        const token = window.grecaptcha.getResponse(widgetId);
+        
+        if (!token) {
+          console.error("reCAPTCHA verification failed");
+          return;
+        }
 
-      const response = await fetch("https://formsubmit.co/info@proedgerestoration.ca", {
-        method: "POST",
-        body: formData,
-      });
+        formData.append("g-recaptcha-response", token);
 
-      if (!response.ok) {
-        console.error("FormSubmit returned an error:", response.statusText);
-        return;
-      }
+        const response = await fetch("https://formsubmit.co/ajax/info@proedgerestoration.ca", {
+          method: "POST",
+          body: formData,
+        });
 
-      setSubmitted(true);
-      form.reset();
+        if (!response.ok) {
+          console.error("FormSubmit returned an error:", response.statusText);
+          return;
+        }
+
+        setSubmitted(true);
+        form.reset();
+        
+        // Reset reCAPTCHA for next submission
+        window.grecaptcha.reset(widgetId);
+      }, 1000);
     } catch (error) {
       console.error("Error submitting the form:", error);
     }
@@ -126,11 +151,12 @@ const RequestEstimate = () => {
               />
             </div>
 
+            {/* reCAPTCHA v2 Invisible */}
+            <div id="recaptcha-container"></div>
+
             {/* Hidden inputs for FormSubmit */}
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="true" />
-            <input type="hidden" name="_ajax" value="true" />
 
             <Button type="submit" className="w-full" size="lg">
               Request Free Estimate
