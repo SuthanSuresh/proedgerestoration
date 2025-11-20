@@ -18,17 +18,7 @@ const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  // Load reCAPTCHA script dynamically
-  useEffect(() => {
-    if (!document.querySelector("#recaptcha-script")) {
-      const script = document.createElement("script");
-      script.src = "https://www.google.com/recaptcha/api.js";
-      script.async = true;
-      script.defer = true;
-      script.id = "recaptcha-script";
-      document.body.appendChild(script);
-    }
-  }, []);
+  // reCAPTCHA script is loaded in index.html, no need to load it again
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
