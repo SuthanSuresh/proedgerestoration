@@ -11,7 +11,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
-            <Link to="/" className="text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
+            <Link to="/#home" className="text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
               ProEdge Restoration
             </Link>
           </div>
@@ -43,11 +43,7 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
-          >
+          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
             <Menu className="h-6 w-6" />
           </button>
         </div>
@@ -84,10 +80,7 @@ const Header = () => {
               >
                 Contact
               </Link>
-              <a
-                href="tel:289-224-9612"
-                className="flex items-center gap-2 text-primary font-semibold py-2"
-              >
+              <a href="tel:289-224-9612" className="flex items-center gap-2 text-primary font-semibold py-2">
                 <Phone className="h-5 w-5" />
                 <span>(289) 224-9612</span>
               </a>
