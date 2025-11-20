@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,17 @@ import { Textarea } from "@/components/ui/textarea";
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleCaptchaVerify = async (token, formData) => {
-    // Add captcha token manually
-    formData.append("g-recaptcha-response", token);
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const firstName = (formData.get("firstName") || "").toString();
+    const lastName = (formData.get("lastName") || "").toString();
+
+    // Dynamic subject line
+    const fullName = `${firstName} ${lastName}`.trim();
+    formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
     await fetch("https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2", {
       method: "POST",
@@ -17,29 +25,14 @@ const RequestEstimate = () => {
     });
 
     setSubmitted(true);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-    const firstName = formData.get("firstName");
-    const lastName = formData.get("lastName");
-
-    // Dynamic subject line
-    formData.set("_subject", `New Estimate Request from ${firstName} ${lastName}`);
-
-    // Execute invisible CAPTCHA
-    grecaptcha.execute("6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ", { action: "submit" })
-    .then((token) => handleCaptchaVerify(token, formData));
-    });
+    form.reset();
   };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Request Free Estimate</CardTitle>
-        <CardDescription>Fill out the form and we'll get back to you within 24 hours</CardDescription>
+        <CardDescription>Fill out the form and we&apos;ll get back to you within 24 hours</CardDescription>
       </CardHeader>
       <CardContent>
         {!submitted ? (
@@ -86,21 +79,17 @@ const RequestEstimate = () => {
               />
             </div>
 
-            <div
-              className="g-recaptcha"
-              data-sitekey="6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"
-              data-size="invisible"
-            ></div>
-
+            {/* FormSubmit hidden fields */}
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="true" />
 
             <Button type="submit" className="w-full" size="lg">
               Request Free Estimate
             </Button>
           </form>
         ) : (
-          <p className="text-black-600 text-center text-lg font-medium mt-4">
+          <p className="text-center text-lg font-medium mt-4">
             Thank you for your inquiry! We will get back to you within 24 hours!
           </p>
         )}
@@ -109,5 +98,4 @@ const RequestEstimate = () => {
   );
 };
 
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 export default RequestEstimate;
