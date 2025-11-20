@@ -19,7 +19,7 @@ const RequestEstimate = () => {
     const fullName = `${firstName} ${lastName}`.trim();
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    await fetch("https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2", {
+    await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
       method: "POST",
       body: formData,
     });
