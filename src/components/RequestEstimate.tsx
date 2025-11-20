@@ -54,7 +54,7 @@ const RequestEstimate = () => {
             />
           </div>
 
-          <input type="hidden" name="_subject" value="New Estimate Request - {timestamp}" />
+          <input type="hidden" name="_subject" value="New Estimate Request from {firstName} {lastName}" />
           <input type="hidden" name="_captcha" value="true" />
           <input type="hidden" name="_next" value="https://proedgerestoration.ca/" />
 
