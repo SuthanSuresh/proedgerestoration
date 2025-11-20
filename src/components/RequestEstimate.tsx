@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 declare global {
   interface Window {
     grecaptcha: {
-      execute: (siteKey?: string, options?: { action?: string }) => Promise<string>;
+      execute: () => Promise<string>;
       ready: (callback: () => void) => void;
     };
   }
@@ -22,7 +22,7 @@ const RequestEstimate = () => {
   useEffect(() => {
     if (!document.querySelector("#recaptcha-script")) {
       const script = document.createElement("script");
-      script.src = `https://www.google.com/recaptcha/api.js?render=${SITE_KEY}`;
+      script.src = "https://www.google.com/recaptcha/api.js";
       script.async = true;
       script.defer = true;
       script.id = "recaptcha-script";
@@ -30,38 +30,41 @@ const RequestEstimate = () => {
     }
   }, []);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const form = e.currentTarget;
     const formData = new FormData(form);
 
     const firstName = (formData.get("firstName") || "").toString();
     const lastName = (formData.get("lastName") || "").toString();
     const fullName = `${firstName} ${lastName}`.trim();
-
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    try {
-      if (!window.grecaptcha) {
-        console.error("reCAPTCHA not loaded yet");
-        return;
-      }
-
-      // Execute reCAPTCHA v3 and get token
-      const token = await window.grecaptcha.execute(SITE_KEY, { action: "submit" });
-      formData.append("g-recaptcha-response", token);
-
-      // Submit to FormSubmit
-      await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-        method: "POST",
-        body: formData,
-      });
-
-      setSubmitted(true);
-      form.reset();
-    } catch (err) {
-      console.error("Form submit error:", err);
+    // Make sure grecaptcha is loaded
+    if (!window.grecaptcha) {
+      console.error("reCAPTCHA not loaded");
+      return;
     }
+
+    // Execute V2 invisible reCAPTCHA
+    window.grecaptcha.ready(async () => {
+      try {
+        const token = await window.grecaptcha.execute(); // V2 style, uses div's sitekey
+        formData.append("g-recaptcha-response", token);
+
+        // Submit to FormSubmit
+        await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+          method: "POST",
+          body: formData,
+        });
+
+        setSubmitted(true);
+        form.reset();
+      } catch (err) {
+        console.error("Form submission or reCAPTCHA error:", err);
+      }
+    });
   };
 
   return (
@@ -115,7 +118,9 @@ const RequestEstimate = () => {
               />
             </div>
 
-            {/* Hidden fields for FormSubmit */}
+            {/* V2 Invisible reCAPTCHA div */}
+            <div className="g-recaptcha" data-sitekey={SITE_KEY} data-size="invisible"></div>
+
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="true" />
