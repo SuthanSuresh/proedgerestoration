@@ -33,7 +33,7 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-300">
             <Button size="lg" variant="default" className="text-lg h-14 px-8">
               <Phone className="mr-2 h-5 w-5" />
-              Call Now: 1-800-PRO-EDGE
+              Call Now: (289) 224-9612
             </Button>
             <Button size="lg" variant="secondary" className="text-lg h-14 px-8">
               Get Free Estimate

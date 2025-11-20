@@ -30,9 +30,9 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <a href="tel:1-800-PRO-EDGE" className="flex items-center gap-2 text-primary font-semibold">
+            <a href="tel:289-224-9612" className="flex items-center gap-2 text-primary font-semibold">
               <Phone className="h-5 w-5" />
-              <span>1-800-PRO-EDGE</span>
+              <span>(289) 224-9612</span>
             </a>
             <Button variant="default" size="lg">
               24/7 Emergency Service
@@ -82,11 +82,11 @@ const Header = () => {
                 Contact
               </a>
               <a
-                href="tel:1-800-PRO-EDGE"
+                href="tel:289-224-9612"
                 className="flex items-center gap-2 text-primary font-semibold py-2"
               >
                 <Phone className="h-5 w-5" />
-                <span>1-800-PRO-EDGE</span>
+                <span>(289) 224-9612</span>
               </a>
               <Button variant="default" className="w-full">
                 24/7 Emergency Service
