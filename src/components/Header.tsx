@@ -37,7 +37,7 @@ const Header = () => {
               <Phone className="h-5 w-5" />
               <span>(289) 224-9612</span>
             </a>
-            <Button variant="default" size="lg" disabled>
+            <Button variant="default" size="lg">
               24/7 Emergency Service
             </Button>
           </div>
