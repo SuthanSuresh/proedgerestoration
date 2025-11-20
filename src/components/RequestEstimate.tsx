@@ -27,34 +27,30 @@ const RequestEstimate = () => {
     const fullName = `${firstName} ${lastName}`.trim();
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    try {
-    // Wait until reCAPTCHA is ready
-    window.grecaptcha.ready(async () => {
-      // Execute invisible reCAPTCHA with site key
-      const token = await window.grecaptcha.execute(
-        "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ",
-        { action: "submit" }
-      );
-
-      // Append token to form data
-      formData.append("g-recaptcha-response", token);
-
-      // Submit to FormSubmit
-      await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-        method: "POST",
-        body: formData,
-      });
-
+    window.grecaptcha.ready(() => {
+      const submitForm = async () => {
+        try {
+          const token = await window.grecaptcha.execute(
+            "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ",
+            { action: "submit" }
+          );
+    
+          formData.append("g-recaptcha-response", token);
+    
+          await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+            method: "POST",
+            body: formData,
+          });
+    
           setSubmitted(true);
           form.reset();
         } catch (error) {
           console.error("reCAPTCHA or form submission error:", error);
         }
-      });
-    } catch (error) {
-      console.error("reCAPTCHA error:", error);
-    }
-  };
+      };
+
+  submitForm();
+});
 
   return (
     <Card>
