@@ -45,7 +45,7 @@ const ContactSection = () => {
             </div>
             <div>
               <div className="font-semibold">Service Area</div>
-              <div className="text-muted-foreground">Serving the Greater Metro Area</div>
+              <div className="text-muted-foreground">Serving the Greater Toronto Area</div>
             </div>
           </div>
 
