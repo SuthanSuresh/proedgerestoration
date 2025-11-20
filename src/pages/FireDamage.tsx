@@ -4,6 +4,7 @@ import { Phone, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ContactSection from "@/components/ContactSection";
 import fireDamage from "@/assets/fire-damage.jpg";
 
 const FireDamage = () => {
@@ -59,8 +60,8 @@ const FireDamage = () => {
               <Phone className="mr-2 h-5 w-5" />
               Call: (289) 224-9612
             </Button>
-            <Button size="lg" variant="outline" className="text-lg h-14 px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-              Get Free Estimate
+            <Button size="lg" variant="outline" className="text-lg h-14 px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+              <a href="#contact">Get Free Estimate</a>
             </Button>
           </div>
         </div>
@@ -196,6 +197,18 @@ const FireDamage = () => {
         </div>
       </section>
 
+      {/* Contact Section */}
+      <section className="py-16 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl font-bold text-center mb-12">Get Your Free Fire Damage Assessment</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <ContactSection />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 bg-primary text-primary-foreground">
         <div className="container mx-auto px-4 text-center">
@@ -211,8 +224,8 @@ const FireDamage = () => {
               <Phone className="mr-2 h-5 w-5" />
               Emergency: (289) 224-9612
             </Button>
-            <Button size="lg" variant="outline" className="text-lg h-14 px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-              Request Free Estimate
+            <Button size="lg" variant="outline" className="text-lg h-14 px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
+              <a href="#contact">Request Free Estimate</a>
             </Button>
           </div>
         </div>
