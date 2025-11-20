@@ -55,7 +55,7 @@ const RequestEstimate = () => {
         const token = await window.grecaptcha.execute();
         formData.append("g-recaptcha-response", token);
 
-        const response = await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+        const response = await fetch("https://formsubmit.co/info@proedgerestoration.ca", {
           method: "POST",
           body: formData,
         });
