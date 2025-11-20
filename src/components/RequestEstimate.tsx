@@ -31,10 +31,7 @@ const RequestEstimate = () => {
     // Execute reCAPTCHA and get token
     try {
       window.grecaptcha.ready(async () => {
-        const token = await window.grecaptcha.execute(
-          "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ", // your site key
-          { action: "submit" }
-        );
+        const token = await window.grecaptcha.execute();
 
         formData.append("g-recaptcha-response", token);
 
@@ -44,8 +41,12 @@ const RequestEstimate = () => {
           body: formData,
         });
 
-    setSubmitted(true);
-    form.reset();
+        setSubmitted(true);
+        form.reset();
+      });
+    } catch (error) {
+      console.error("reCAPTCHA error:", error);
+    }
   };
 
   return (
