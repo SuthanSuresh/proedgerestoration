@@ -55,7 +55,7 @@ const RequestEstimate = () => {
         const token = await window.grecaptcha.execute();
         formData.append("g-recaptcha-response", token);
 
-        const response = await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+        const response = await fetch("https://formsubmit.co/info@proedgerestoration.ca", {
           method: "POST",
           body: formData,
         });
@@ -130,7 +130,7 @@ const RequestEstimate = () => {
             {/* Hidden inputs for FormSubmit */}
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_captcha" value="true" />
             <input type="hidden" name="_ajax" value="true" />
 
             <Button type="submit" className="w-full" size="lg">
