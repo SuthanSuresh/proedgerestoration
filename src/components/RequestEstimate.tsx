@@ -28,16 +28,22 @@ const RequestEstimate = () => {
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
     try {
-      window.grecaptcha.ready(async () => {
-        try {
-          const token = await window.grecaptcha.execute();
+    // Wait until reCAPTCHA is ready
+    window.grecaptcha.ready(async () => {
+      // Execute invisible reCAPTCHA with site key
+      const token = await window.grecaptcha.execute(
+        "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ",
+        { action: "submit" }
+      );
 
-          formData.append("g-recaptcha-response", token);
+      // Append token to form data
+      formData.append("g-recaptcha-response", token);
 
-          await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-            method: "POST",
-            body: formData,
-          });
+      // Submit to FormSubmit
+      await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+        method: "POST",
+        body: formData,
+      });
 
           setSubmitted(true);
           form.reset();
@@ -109,7 +115,7 @@ const RequestEstimate = () => {
 
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_captcha" value="true" />
             <input type="hidden" name="_ajax" value="true" />
 
             <Button type="submit" className="w-full" size="lg">
