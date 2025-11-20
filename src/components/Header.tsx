@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Phone, Menu } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,23 +11,25 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
-            <h1 className="text-2xl font-bold text-primary">ProEdge Restoration</h1>
+            <Link to="/" className="text-2xl font-bold text-primary hover:opacity-80 transition-opacity">
+              ProEdge Restoration
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#services" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/#services" className="text-foreground hover:text-primary transition-colors">
               Services
-            </a>
-            <a href="#why-us" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/#why-us" className="text-foreground hover:text-primary transition-colors">
               Why Choose Us
-            </a>
-            <a href="#process" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/#process" className="text-foreground hover:text-primary transition-colors">
               Our Process
-            </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/#contact" className="text-foreground hover:text-primary transition-colors">
               Contact
-            </a>
+            </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
@@ -53,34 +56,34 @@ const Header = () => {
         {isMenuOpen && (
           <nav className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
-              <a
-                href="#services"
+              <Link
+                to="/#services"
                 className="text-foreground hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Services
-              </a>
-              <a
-                href="#why-us"
+              </Link>
+              <Link
+                to="/#why-us"
                 className="text-foreground hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Why Choose Us
-              </a>
-              <a
-                href="#process"
+              </Link>
+              <Link
+                to="/#process"
                 className="text-foreground hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Our Process
-              </a>
-              <a
-                href="#contact"
+              </Link>
+              <Link
+                to="/#contact"
                 className="text-foreground hover:text-primary transition-colors py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contact
-              </a>
+              </Link>
               <a
                 href="tel:289-224-9612"
                 className="flex items-center gap-2 text-primary font-semibold py-2"
