@@ -24,18 +24,15 @@ const RequestEstimate = () => {
     const firstName = (formData.get("firstName") || "").toString();
     const lastName = (formData.get("lastName") || "").toString();
 
-    // Dynamic subject line
     const fullName = `${firstName} ${lastName}`.trim();
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    // Execute reCAPTCHA and get token
     try {
       window.grecaptcha.ready(async () => {
-        const token = await window.grecaptcha.execute();
+        const token = await window.grecaptcha.execute("6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ", { action: "submit" });
 
         formData.append("g-recaptcha-response", token);
 
-        // Submit to FormSubmit
         await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
           method: "POST",
           body: formData,
