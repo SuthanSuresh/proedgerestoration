@@ -12,6 +12,11 @@ const RequestEstimate = () => {
 
     const formData = new FormData(e.target);
 
+    const firstName = formData.get("firstName");
+    const lastName = formData.get("lastName");
+
+    formData.set("_subject", `New Estimate Request from ${firstName} ${lastName}`);
+
     await fetch("https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2", {
       method: "POST",
       body: formData,
