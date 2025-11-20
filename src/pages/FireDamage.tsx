@@ -57,9 +57,11 @@ const FireDamage = () => {
             and complete structural restoration. We help you recover from fire damage quickly and completely.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" variant="secondary" className="text-lg h-14 px-8">
-              <Phone className="mr-2 h-5 w-5" />
-              Call: (289) 224-9612
+            <Button size="lg" variant="secondary" className="text-lg h-14 px-8" asChild>
+              <a href="tel:289-224-9612">
+                <Phone className="mr-2 h-5 w-5" />
+                Call: (289) 224-9612
+              </a>
             </Button>
             <Button size="lg" variant="outline" className="text-lg h-14 px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
               <a href="#contact">Get Free Estimate</a>
