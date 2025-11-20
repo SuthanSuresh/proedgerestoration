@@ -7,6 +7,19 @@ import { Textarea } from "@/components/ui/textarea";
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    await fetch("https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2", {
+      method: "POST",
+      body: formData,
+    });
+
+    setSubmitted(true);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -15,13 +28,7 @@ const RequestEstimate = () => {
       </CardHeader>
       <CardContent>
         {!submitted ? (
-          <form
-            className="space-y-4"
-            action="https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2"
-            method="POST"
-            target="_self"
-            onSubmit={() => setSubmitted(true)}
-          >
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label htmlFor="firstName" className="text-sm font-medium">
@@ -72,6 +79,7 @@ const RequestEstimate = () => {
 
             <input type="hidden" name="_subject" value="New Estimate Request from {firstName} {lastName}" />
             <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
 
             <Button type="submit" className="w-full" size="lg">
               Request Free Estimate
