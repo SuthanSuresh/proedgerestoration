@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 declare global {
   interface Window {
     grecaptcha: {
-      execute: () => Promise<string>;
+      execute: (siteKey: string, options: { action: string }) => Promise<string>;
       ready: (callback: () => void) => void;
     };
   }
@@ -18,9 +18,24 @@ const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  // reCAPTCHA script is loaded in index.html, no need to load it again
+  const [recaptchaReady, setRecaptchaReady] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  // Wait for reCAPTCHA to be ready
+  useEffect(() => {
+    const checkRecaptcha = () => {
+      if (window.grecaptcha && window.grecaptcha.ready) {
+        window.grecaptcha.ready(() => {
+          setRecaptchaReady(true);
+        });
+      } else {
+        // If grecaptcha is not loaded yet, check again in 100ms
+        setTimeout(checkRecaptcha, 100);
+      }
+    };
+    checkRecaptcha();
+  }, []);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -33,34 +48,31 @@ const RequestEstimate = () => {
     // Dynamic email subject
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    if (!window.grecaptcha) {
-      console.error("reCAPTCHA not loaded yet");
+    if (!recaptchaReady || !window.grecaptcha) {
+      console.error("reCAPTCHA not ready yet");
       return;
     }
 
-    // Use grecaptcha.ready to ensure reCAPTCHA is initialized
-    window.grecaptcha.ready(async () => {
-      try {
-        // V2 invisible reCAPTCHA will automatically use the div's sitekey
-        const token = await window.grecaptcha.execute();
-        formData.append("g-recaptcha-response", token);
+    try {
+      // Execute reCAPTCHA v3 and get token
+      const token = await window.grecaptcha.execute(SITE_KEY, { action: 'submit' });
+      formData.append("g-recaptcha-response", token);
 
-        const response = await fetch("https://formsubmit.co/info@proedgerestoration.ca", {
-          method: "POST",
-          body: formData,
-        });
+      const response = await fetch("https://formsubmit.co/info@proedgerestoration.ca", {
+        method: "POST",
+        body: formData,
+      });
 
-        if (!response.ok) {
-          console.error("FormSubmit returned an error:", response.statusText);
-          return;
-        }
-
-        setSubmitted(true);
-        form.reset();
-      } catch (error) {
-        console.error("Error submitting the form:", error);
+      if (!response.ok) {
+        console.error("FormSubmit returned an error:", response.statusText);
+        return;
       }
-    });
+
+      setSubmitted(true);
+      form.reset();
+    } catch (error) {
+      console.error("Error submitting the form:", error);
+    }
   };
 
   return (
@@ -113,9 +125,6 @@ const RequestEstimate = () => {
                 required
               />
             </div>
-
-            {/* V2 Invisible reCAPTCHA */}
-            <div className="g-recaptcha" data-sitekey={SITE_KEY} data-size="invisible"></div>
 
             {/* Hidden inputs for FormSubmit */}
             <input type="hidden" name="_subject" />
