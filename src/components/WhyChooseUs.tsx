@@ -4,32 +4,32 @@ const features = [
   {
     icon: Clock,
     title: "24/7 Emergency Response",
-    description: "Rapid response within 60 minutes across the Greater Toronto Area. Every minute counts when dealing with water, fire, or storm damage.",
+    description: "Always available when disaster strikes. Fast response times guaranteed.",
   },
   {
     icon: Shield,
     title: "Licensed & Insured",
-    description: "IICRC certified technicians with full liability insurance. Your property and peace of mind are protected throughout the restoration process.",
+    description: "Fully certified and insured professionals you can trust with your property.",
   },
   {
     icon: Award,
-    title: "20 Years Combined Experience",
-    description: "Two decades of expertise restoring homes and businesses. We've successfully completed thousands of restoration projects across the GTA.",
+    title: "15+ Years Experience",
+    description: "Industry-leading expertise in all types of property restoration.",
   },
   {
     icon: Users,
-    title: "IICRC Certified Technicians",
-    description: "Our team holds industry certifications in water damage restoration, fire and smoke damage, and mold remediation. Ongoing training ensures we use the latest techniques.",
+    title: "Expert Team",
+    description: "Highly trained technicians using state-of-the-art equipment.",
   },
   {
     icon: CheckCircle,
-    title: "Advanced Equipment & Techniques",
-    description: "Industrial-grade moisture detection, thermal imaging, and drying equipment. We follow industry best practices to ensure thorough restoration.",
+    title: "Quality Guaranteed",
+    description: "We stand behind our work with comprehensive quality guarantees.",
   },
   {
     icon: Headphones,
-    title: "Direct Insurance Billing",
-    description: "We handle all insurance paperwork and work directly with adjusters. Get your claim processed faster with detailed documentation and estimates.",
+    title: "Insurance Support",
+    description: "We work directly with insurance companies to streamline your claim.",
   },
 ];
 
