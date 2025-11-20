@@ -78,8 +78,8 @@ const RequestEstimate = () => {
             </Button>
           </form>
         ) : (
-          <p className="text-green-600 text-center text-lg font-medium mt-4">
-            Thank you! Your request has been submitted. We will get back to you within 24 hours.
+          <p className="text-black-600 text-center text-lg font-medium mt-4">
+            Thank you for your inquiry! We will get back to you within 24 hours!
           </p>
         )}
       </CardContent>
