@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,37 +13,64 @@ declare global {
   }
 }
 
+const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"; // Replace with your actual V2 site key
+
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  // Load reCAPTCHA script dynamically
+  useEffect(() => {
+    if (!document.querySelector("#recaptcha-script")) {
+      const script = document.createElement("script");
+      script.src = "https://www.google.com/recaptcha/api.js";
+      script.async = true;
+      script.defer = true;
+      script.id = "recaptcha-script";
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
     const formData = new FormData(form);
+
     const firstName = (formData.get("firstName") || "").toString();
     const lastName = (formData.get("lastName") || "").toString();
-
-    // Dynamic subject line
     const fullName = `${firstName} ${lastName}`.trim();
+
+    // Dynamic email subject
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    // Execute reCAPTCHA and get token
-    try {
-      const token = await window.grecaptcha.execute();
-      formData.append("g-recaptcha-response", token);
-    } catch (error) {
-      console.error("reCAPTCHA error:", error);
+    if (!window.grecaptcha) {
+      console.error("reCAPTCHA not loaded yet");
       return;
     }
 
-    await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-      method: "POST",
-      body: formData,
-    });
+    // Use grecaptcha.ready to ensure reCAPTCHA is initialized
+    window.grecaptcha.ready(async () => {
+      try {
+        // V2 invisible reCAPTCHA will automatically use the div's sitekey
+        const token = await window.grecaptcha.execute();
+        formData.append("g-recaptcha-response", token);
 
-    setSubmitted(true);
-    form.reset();
+        const response = await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!response.ok) {
+          console.error("FormSubmit returned an error:", response.statusText);
+          return;
+        }
+
+        setSubmitted(true);
+        form.reset();
+      } catch (error) {
+        console.error("Error submitting the form:", error);
+      }
+    });
   };
 
   return (
@@ -97,12 +124,10 @@ const RequestEstimate = () => {
               />
             </div>
 
-            <div
-              className="g-recaptcha"
-              data-sitekey="6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"
-              data-size="invisible"
-            ></div>
+            {/* V2 Invisible reCAPTCHA */}
+            <div className="g-recaptcha" data-sitekey={SITE_KEY} data-size="invisible"></div>
 
+            {/* Hidden inputs for FormSubmit */}
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
             <input type="hidden" name="_captcha" value="true" />
