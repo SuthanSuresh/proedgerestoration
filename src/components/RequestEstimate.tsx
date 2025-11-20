@@ -1,4 +1,4 @@
-import { FormEvent, useState, useEffect } from "react";
+import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,58 +13,37 @@ declare global {
   }
 }
 
-const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
-
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  // Load reCAPTCHA script dynamically
-  useEffect(() => {
-    if (!document.querySelector("#recaptcha-script")) {
-      const script = document.createElement("script");
-      script.src = "https://www.google.com/recaptcha/api.js";
-      script.async = true;
-      script.defer = true;
-      script.id = "recaptcha-script";
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
     const formData = new FormData(form);
-
     const firstName = (formData.get("firstName") || "").toString();
     const lastName = (formData.get("lastName") || "").toString();
+
+    // Dynamic subject line
     const fullName = `${firstName} ${lastName}`.trim();
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    // Make sure grecaptcha is loaded
-    if (!window.grecaptcha) {
-      console.error("reCAPTCHA not loaded");
+    // Execute reCAPTCHA and get token
+    try {
+      const token = await window.grecaptcha.execute();
+      formData.append("g-recaptcha-response", token);
+    } catch (error) {
+      console.error("reCAPTCHA error:", error);
       return;
     }
 
-    // Execute V2 invisible reCAPTCHA
-    window.grecaptcha.ready(async () => {
-      try {
-        const token = await window.grecaptcha.execute(); // V2 style, uses div's sitekey
-        formData.append("g-recaptcha-response", token);
-
-        // Submit to FormSubmit
-        await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-          method: "POST",
-          body: formData,
-        });
-
-        setSubmitted(true);
-        form.reset();
-      } catch (err) {
-        console.error("Form submission or reCAPTCHA error:", err);
-      }
+    await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+      method: "POST",
+      body: formData,
     });
+
+    setSubmitted(true);
+    form.reset();
   };
 
   return (
@@ -118,16 +97,15 @@ const RequestEstimate = () => {
               />
             </div>
 
-            {/* V2 Invisible reCAPTCHA div */}
             <div
               className="g-recaptcha"
-              data-sitekey={"6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"}
+              data-sitekey="6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"
               data-size="invisible"
             ></div>
 
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_captcha" value="true" />
             <input type="hidden" name="_ajax" value="true" />
 
             <Button type="submit" className="w-full" size="lg">
