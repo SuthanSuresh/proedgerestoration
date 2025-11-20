@@ -201,7 +201,7 @@ const FireDamage = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 bg-background">
+      <section id="contact" className="py-16 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Get Your Free Fire Damage Assessment</h2>
@@ -224,9 +224,11 @@ const FireDamage = () => {
             Fast response to minimize damage and begin your recovery immediately.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg h-14 px-8">
-              <Phone className="mr-2 h-5 w-5" />
-              Emergency: (289) 224-9612
+            <Button size="lg" variant="secondary" className="text-lg h-14 px-8" asChild>
+              <a href="tel:289-224-9612">
+                <Phone className="mr-2 h-5 w-5" />
+                Emergency: (289) 224-9612
+              </a>
             </Button>
             <Button size="lg" variant="outline" className="text-lg h-14 px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
               <a href="#contact">Request Free Estimate</a>
