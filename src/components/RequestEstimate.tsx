@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 declare global {
   interface Window {
     grecaptcha: {
-      execute: () => Promise<string>;
+      execute: (siteKey: string, options?: { action?: string }) => Promise<string>;
       ready: (callback: () => void) => void;
     };
   }
