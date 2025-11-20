@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer className="bg-primary text-primary-foreground py-12">
@@ -14,24 +16,24 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#services" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <Link to="/#services" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                   Services
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#why-us" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <Link to="/#why-us" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                   Why Choose Us
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#process" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <Link to="/#process" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                   Our Process
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#contact" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
+                <Link to="/#contact" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors">
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
