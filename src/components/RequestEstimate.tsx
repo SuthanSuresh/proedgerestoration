@@ -7,15 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(e.target);
-
-    const firstName = formData.get("firstName");
-    const lastName = formData.get("lastName");
-
-    formData.set("_subject", `New Estimate Request from ${firstName} ${lastName}`);
+  const handleCaptchaVerify = async (token, formData) => {
+    // Add captcha token manually
+    formData.append("g-recaptcha-response", token);
 
     await fetch("https://formsubmit.co/40fc935e628b6063ba8f1f7c8d73d1b2", {
       method: "POST",
@@ -23,6 +17,22 @@ const RequestEstimate = () => {
     });
 
     setSubmitted(true);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const firstName = formData.get("firstName");
+    const lastName = formData.get("lastName");
+
+    // Dynamic subject line
+    formData.set("_subject", `New Estimate Request from ${firstName} ${lastName}`);
+
+    // Execute invisible CAPTCHA
+    grecaptcha.execute("6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ", { action: "submit" })
+    .then((token) => handleCaptchaVerify(token, formData));
+    });
   };
 
   return (
@@ -83,7 +93,6 @@ const RequestEstimate = () => {
             ></div>
 
             <input type="hidden" name="_subject" />
-            <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
 
             <Button type="submit" className="w-full" size="lg">
@@ -100,4 +109,5 @@ const RequestEstimate = () => {
   );
 };
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 export default RequestEstimate;
