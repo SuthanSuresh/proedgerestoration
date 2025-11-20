@@ -4,7 +4,8 @@ import { Phone, CheckCircle, AlertTriangle, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ContactSection from "@/components/ContactSection";
+import EmergencyContact from "@/components/EmergencyContact";
+import RequestEstimate from "@/components/RequestEstimate";
 import stormDamage from "@/assets/storm-damage.jpg";
 
 const StormDamage = () => {
@@ -239,10 +240,11 @@ const StormDamage = () => {
       {/* Contact Section */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-bold text-center mb-12">Get Your Free Storm Damage Assessment</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <ContactSection />
+              <EmergencyContact />
+              <RequestEstimate />
             </div>
           </div>
         </div>
