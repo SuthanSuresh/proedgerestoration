@@ -4,6 +4,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      execute: () => Promise<string>;
+      ready: (callback: () => void) => void;
+    };
+  }
+}
+
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
@@ -18,6 +27,15 @@ const RequestEstimate = () => {
     // Dynamic subject line
     const fullName = `${firstName} ${lastName}`.trim();
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
+
+    // Execute reCAPTCHA and get token
+    try {
+      const token = await window.grecaptcha.execute();
+      formData.append("g-recaptcha-response", token);
+    } catch (error) {
+      console.error("reCAPTCHA error:", error);
+      return;
+    }
 
     await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
       method: "POST",
@@ -78,6 +96,12 @@ const RequestEstimate = () => {
                 required
               />
             </div>
+
+            <div
+              className="g-recaptcha"
+              data-sitekey="6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"
+              data-size="invisible"
+            ></div>
 
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
