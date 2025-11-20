@@ -4,32 +4,32 @@ const features = [
   {
     icon: Clock,
     title: "24/7 Emergency Response",
-    description: "Always available when disaster strikes. Fast response times guaranteed.",
+    description: "Rapid response within 60 minutes across the Greater Toronto Area. Every minute counts when dealing with water, fire, or storm damage.",
   },
   {
     icon: Shield,
     title: "Licensed & Insured",
-    description: "Fully certified and insured professionals you can trust with your property.",
+    description: "IICRC certified technicians with full liability insurance. Your property and peace of mind are protected throughout the restoration process.",
   },
   {
     icon: Award,
-    title: "15+ Years Experience",
-    description: "Industry-leading expertise in all types of property restoration.",
+    title: "20 Years Combined Experience",
+    description: "Two decades of expertise restoring homes and businesses. We've successfully completed thousands of restoration projects across the GTA.",
   },
   {
     icon: Users,
-    title: "Expert Team",
-    description: "Highly trained technicians using state-of-the-art equipment.",
+    title: "IICRC Certified Technicians",
+    description: "Our team holds industry certifications in water damage restoration, fire and smoke damage, and mold remediation. Ongoing training ensures we use the latest techniques.",
   },
   {
     icon: CheckCircle,
-    title: "Quality Guaranteed",
-    description: "We stand behind our work with comprehensive quality guarantees.",
+    title: "Advanced Equipment & Techniques",
+    description: "Industrial-grade moisture detection, thermal imaging, and drying equipment. We follow industry best practices to ensure thorough restoration.",
   },
   {
     icon: Headphones,
-    title: "Insurance Support",
-    description: "We work directly with insurance companies to streamline your claim.",
+    title: "Direct Insurance Billing",
+    description: "We handle all insurance paperwork and work directly with adjusters. Get your claim processed faster with detailed documentation and estimates.",
   },
 ];
 
