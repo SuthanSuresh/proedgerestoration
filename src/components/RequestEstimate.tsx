@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 declare global {
   interface Window {
     grecaptcha: {
-      execute: (siteKey: string, options?: { action?: string }) => Promise<string>;
+      execute: (siteKey?: string, options?: { action?: string }) => Promise<string>;
       ready: (callback: () => void) => void;
     };
   }
@@ -29,17 +29,21 @@ const RequestEstimate = () => {
 
     try {
       window.grecaptcha.ready(async () => {
-        const token = await window.grecaptcha.execute("6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ", { action: "submit" });
+        try {
+          const token = await window.grecaptcha.execute();
 
-        formData.append("g-recaptcha-response", token);
+          formData.append("g-recaptcha-response", token);
 
-        await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-          method: "POST",
-          body: formData,
-        });
+          await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+            method: "POST",
+            body: formData,
+          });
 
-        setSubmitted(true);
-        form.reset();
+          setSubmitted(true);
+          form.reset();
+        } catch (error) {
+          console.error("reCAPTCHA or form submission error:", error);
+        }
       });
     } catch (error) {
       console.error("reCAPTCHA error:", error);
