@@ -119,7 +119,11 @@ const RequestEstimate = () => {
             </div>
 
             {/* V2 Invisible reCAPTCHA div */}
-            <div className="g-recaptcha" data-sitekey={6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ} data-size="invisible"></div>
+            <div
+              className="g-recaptcha"
+              data-sitekey={"6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"}
+              data-size="invisible"
+            ></div>
 
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
