@@ -30,17 +30,19 @@ const RequestEstimate = () => {
 
     // Execute reCAPTCHA and get token
     try {
-      const token = await window.grecaptcha.execute();
-      formData.append("g-recaptcha-response", token);
-    } catch (error) {
-      console.error("reCAPTCHA error:", error);
-      return;
-    }
+      window.grecaptcha.ready(async () => {
+        const token = await window.grecaptcha.execute(
+          "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ", // your site key
+          { action: "submit" }
+        );
 
-    await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-      method: "POST",
-      body: formData,
-    });
+        formData.append("g-recaptcha-response", token);
+
+        // Submit to FormSubmit
+        await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+          method: "POST",
+          body: formData,
+        });
 
     setSubmitted(true);
     form.reset();
