@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"; // Replace with your actual V2 site key
+const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
 
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -130,7 +130,7 @@ const RequestEstimate = () => {
             {/* Hidden inputs for FormSubmit */}
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_captcha" value="true" />
             <input type="hidden" name="_ajax" value="true" />
 
             <Button type="submit" className="w-full" size="lg">
