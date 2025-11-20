@@ -50,7 +50,7 @@ const RequestEstimate = () => {
 
           <input type="hidden" name="_subject" value="New Estimate Request!" />
           <input type="hidden" name="_captcha" value="true" 
-            <input type="hidden" name="_next" value="https://proedgerestoration.ca/thank-you" />
+            <input type="hidden" name="_next" value="https://proedgerestoration.ca/"/>
 
           <Button type="submit" className="w-full" size="lg">
             Request Free Estimate
