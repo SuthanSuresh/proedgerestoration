@@ -8,12 +8,10 @@ const RequestEstimate = () => {
     <Card>
       <CardHeader>
         <CardTitle className="text-2xl">Request Free Estimate</CardTitle>
-        <CardDescription>
-          Fill out the form and we'll get back to you within 24 hours
-        </CardDescription>
+        <CardDescription>Fill out the form and we'll get back to you within 24 hours</CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="space-y-4">
+        <form className="space-y-4" action="https://formsubmit.co/drizsuresh@gmail.com" method="POST">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label htmlFor="firstName" className="text-sm font-medium">
@@ -47,12 +45,11 @@ const RequestEstimate = () => {
             <label htmlFor="message" className="text-sm font-medium">
               Tell us about your property damage
             </label>
-            <Textarea
-              id="message"
-              placeholder="Please describe the type of damage and when it occurred..."
-              rows={4}
-            />
+            <Textarea id="message" placeholder="Please describe the type of damage and when it occurred..." rows={4} />
           </div>
+
+          <input type="hidden" name="_subject" value="New Estimate Request!" />
+          <input type="hidden" name="_captcha" value="true" />
 
           <Button type="submit" className="w-full" size="lg">
             Request Free Estimate
