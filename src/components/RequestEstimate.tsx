@@ -13,44 +13,60 @@ declare global {
   }
 }
 
+const SITE_KEY = "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ";
+
 const RequestEstimate = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const form = e.currentTarget;
     const formData = new FormData(form);
+
     const firstName = (formData.get("firstName") || "").toString();
     const lastName = (formData.get("lastName") || "").toString();
-
     const fullName = `${firstName} ${lastName}`.trim();
+
     formData.set("_subject", fullName ? `New Estimate Request from ${fullName}` : "New Estimate Request");
 
-    window.grecaptcha.ready(() => {
-      const submitForm = async () => {
-        try {
-          const token = await window.grecaptcha.execute(
-            "6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ",
-            { action: "submit" }
-          );
-    
-          formData.append("g-recaptcha-response", token);
-    
-          await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
-            method: "POST",
-            body: formData,
-          });
-    
-          setSubmitted(true);
-          form.reset();
-        } catch (error) {
-          console.error("reCAPTCHA or form submission error:", error);
-        }
-      };
+    // Ensure grecaptcha is loaded
+    if (!window.grecaptcha) {
+      console.error("reCAPTCHA not loaded");
+      return;
+    }
 
-  submitForm();
-});
+    // Wrap grecaptcha in a promise to use async/await
+    const executeRecaptcha = () =>
+      new Promise<string>((resolve, reject) => {
+        try {
+          window.grecaptcha.ready(async () => {
+            try {
+              const token = await window.grecaptcha.execute(SITE_KEY, { action: "submit" });
+              resolve(token);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+    try {
+      const token = await executeRecaptcha();
+      formData.append("g-recaptcha-response", token);
+
+      await fetch("https://formsubmit.co/drizsuresh@gmail.com", {
+        method: "POST",
+        body: formData,
+      });
+
+      setSubmitted(true);
+      form.reset();
+    } catch (error) {
+      console.error("reCAPTCHA or form submission error:", error);
+    }
+  };
 
   return (
     <Card>
@@ -102,12 +118,6 @@ const RequestEstimate = () => {
                 required
               />
             </div>
-
-            <div
-              className="g-recaptcha"
-              data-sitekey="6LfSgRIsAAAAAH4OGqkxmIifmoJbnLvhgtyPlCCZ"
-              data-size="invisible"
-            ></div>
 
             <input type="hidden" name="_subject" />
             <input type="hidden" name="_template" value="table" />
