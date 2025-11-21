@@ -42,7 +42,7 @@ const Footer = () => {
             <h4 className="font-semibold text-lg mb-4">Contact Info</h4>
             <ul className="space-y-2 text-primary-foreground/80">
               <li>Emergency: (289) 224-9612</li>
-              <li>Email: info@proedgerestoration.com</li>
+              <li>Email: info@proedgerestoration.ca</li>
               <li>Available 24/7</li>
             </ul>
           </div>
