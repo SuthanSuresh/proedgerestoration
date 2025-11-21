@@ -29,8 +29,8 @@ const EmergencyContact = () => {
           </div>
           <div>
             <div className="font-semibold">Email</div>
-            <a href="mailto:info@proedgerestoration.com" className="text-primary">
-              info@proedgerestoration.com
+            <a href="mailto:info@proedgerestoration.ca" className="text-primary">
+              info@proedgerestoration.ca
             </a>
           </div>
         </div>
